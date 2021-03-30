@@ -1,26 +1,36 @@
 pipeline {
+    environment {
+        registry = "docker push bimz/stringopdocker:tagname"
+        registryCredential = 'dockerhub_id'
+        dockerImage = ''
+    }
     agent any
-    tools {
-        maven 'Maven 3.6.3'
-    }
     stages {
-        stage('Build') {
+        stage('Cloning our Git') {
             steps {
-                echo 'String Operator'
-                sh 'java --version'
-                sh 'mvn clean compile'
+                git 'https://github.com/milanarif/StringOperator'
             }
         }
-        stage('Test') {
+        stage('Building our image') {
             steps {
-                sh 'mvn test'
+                script {
+                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                }
             }
         }
-        stage('package') {
+        stage('Deploy our image') {
             steps {
-                sh 'mvn package'
+                script {
+                    docker.withRegistry('', registryCredential) {
+                        dockerImage.push()
+                    }
+                }
+            }
+        }
+        stage('Cleaning up') {
+            steps {
+                sh "docker rmi $registry:$BUILD_NUMBER"
             }
         }
     }
-
 }
