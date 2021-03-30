@@ -3,11 +3,12 @@ pipeline {
     tools {
         maven 'Maven 3.6.3'
     }
+
     stages {
         stage('Build') {
             steps {
                 echo 'String Operator'
-                sh 'java -version'
+                sh 'java --version'
                 sh 'mvn clean compile'
             }
         }
@@ -18,14 +19,19 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                script {
-                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
-                    docker.withRegistry('', registryCredential) {
-                        dockerImage.push()
-                    }
+                sh 'mvn package'
+                sh 'docker --version'
+            }
+            post {
+                success {
+                    archiveArtifacts 'target/*.jar'
+                }
+            }
+            stage('Push') {
+                steps {
+                    sh 'docker push bimz/docker:latest'
                 }
             }
         }
     }
-
 }
