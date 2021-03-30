@@ -7,7 +7,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'String Operator'
-                sh 'java --version'
+                sh 'java -version'
                 sh 'mvn clean compile'
             }
         }
@@ -19,7 +19,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 sh 'mvn package'
-                sh 'docker --version'
+                sh 'docker -version'
             }
             post {
                 success {
