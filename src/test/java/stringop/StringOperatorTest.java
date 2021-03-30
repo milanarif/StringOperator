@@ -8,10 +8,9 @@ public class StringOperatorTest {
 
    @Test
    void correctStringOutput(){
-   StringOperator string = new StringOperator(" HEJ  ");
-   String expectedResult = "HEJ";
+   String expectedResult = "Hello!";
 
-   String actualResult = string.trimString();
+   String actualResult = StringOperator.returnHello();
 
    assertThat(actualResult).isEqualTo(expectedResult);
    }
