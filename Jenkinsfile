@@ -18,7 +18,9 @@ pipeline{
             }
         }
         stage('Build image') {
-            sh 'docker build -t string-operator .'
+            steps {
+                sh 'docker build -t string-operator .'
+            }
         }
     }
 }
