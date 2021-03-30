@@ -1,31 +1,32 @@
-pipeline {
-    environment {
-        registry = "milanarif/string-operator"
-        registryCredential = 'dockerhub'
-    }
+pipeline{
     agent any
-    tools {
+    tools{
         maven 'Maven 3.6.3'
     }
 
-    stages {
-        stage('Build') {
+    stages{
+        stage('Build'){
             steps {
-                echo 'String Operator'
+                echo 'Hello'
                 sh 'java -version'
                 sh 'mvn clean compile'
             }
         }
-        stage('Test') {
+        stage('Test'){
             steps {
                 sh 'mvn test'
             }
         }
-        stage('Deploy') {
-            steps {
-                script {
-                    docker.build registry + ":$BUILD_NUMBER"
-                }
+        stage('Build image') {
+                /* This builds the actual image; synonymous to
+                 * docker build on the command line */
+
+                app = docker.build("stringoperator/stringop")
+        }
+        stage('Push image') {
+            docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+                        app.push("${env.BUILD_NUMBER}")
+                        app.push("latest")
             }
         }
     }
