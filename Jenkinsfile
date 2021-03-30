@@ -1,6 +1,6 @@
 pipeline {
     environment {
-        registry = "docker push bimz/stringopdocker"
+        registry = "docker push bimz/stringopdocker:tagname"
         registryCredential = 'dockerhub_id'
         dockerImage = ''
     }
@@ -30,19 +30,6 @@ pipeline {
         stage('Cleaning up') {
             steps {
                 sh "docker rmi $registry:$BUILD_NUMBER"
-            }
-        }
-        stage('Build image') {
-            steps {
-                app = docker.build("string-operator")
-            }
-        }
-        stage('Push image') {
-            steps{
-                docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
-                    app.push("${env.BUILD_NUMBER}")
-                    app.push("latest")
-                }
             }
         }
     }
