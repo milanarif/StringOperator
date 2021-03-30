@@ -1,18 +1,13 @@
 pipeline {
-    environment {
-        registry = "milanarif/string-operator"
-        registryCredential = 'dockerhub'
-    }
     agent any
     tools {
         maven 'Maven 3.6.3'
     }
-
     stages {
         stage('Build') {
             steps {
                 echo 'String Operator'
-                sh 'java --version'
+                sh 'java -version'
                 sh 'mvn clean compile'
             }
         }
@@ -23,10 +18,15 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                script {
-                    docker.build registry + ":$BUILD_NUMBER"
+                sh 'mvn package'
+                sh 'docker -version'
+            }
+            post {
+                success {
+                    archiveArtifacts 'target/*.jar'
                 }
             }
         }
     }
+
 }
