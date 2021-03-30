@@ -19,7 +19,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 sh 'mvn package'
-                sh 'docker build'
+                sh 'docker build -t string-operator'
             }
             post {
                 success {
