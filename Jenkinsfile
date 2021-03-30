@@ -18,15 +18,19 @@ pipeline{
             }
         }
         stage('Build image') {
-                /* This builds the actual image; synonymous to
-                 * docker build on the command line */
-
-                app = docker.build("stringoperator/stringop")
+            steps {
+                script {
+                    dockerImage = docker.build("string-operator")
+                }
+            }
         }
         stage('Push image') {
-            docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
-                        app.push("${env.BUILD_NUMBER}")
-                        app.push("latest")
+            steps {
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+                        dockerImage.push()
+                    }
+                }
             }
         }
     }
