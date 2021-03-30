@@ -18,12 +18,11 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                sh 'mvn package'
-                sh 'docker build -t string-operator'
-            }
-            post {
-                success {
-                    archiveArtifacts 'target/*.jar'
+                script {
+                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                    docker.withRegistry('', registryCredential) {
+                        dockerImage.push()
+                    }
                 }
             }
         }
