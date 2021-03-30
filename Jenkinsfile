@@ -12,7 +12,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'String Operator'
-                sh 'java --version'
+                sh 'java -version'
                 sh 'mvn clean compile'
             }
         }
