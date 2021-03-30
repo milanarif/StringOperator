@@ -18,20 +18,7 @@ pipeline{
             }
         }
         stage('Build image') {
-            steps {
-                script {
-                    dockerImage = docker.build("string-operator")
-                }
-            }
-        }
-        stage('Push image') {
-            steps {
-                script {
-                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
-                        dockerImage.push()
-                    }
-                }
-            }
+            sh 'docker build -t string-operator .'
         }
     }
 }
