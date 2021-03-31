@@ -25,25 +25,24 @@ pipeline {
             steps {
                 script {
                     def pom = readMavenPom file: 'pom.xml'
-                    def version = pom.version
+                    def version = pom.version.toString
                     if (version.contains('SNAPSHOT')) {
-                        currentBuild.result = 'SUCCESS'
-                        return
+                        sh 'mvn package'
+                        sh 'docker --version'
+                        sh 'docker build -t milanarif/string-operator .'
+                        archiveArtifacts artifacts: 'target/*.jar'
                     }
-                }
-                sh 'mvn package'
-                sh 'docker --version'
-                sh 'docker build -t milanarif/string-operator .'
-            }
-            post {
-                success {
-                    archiveArtifacts 'target/*.jar'
                 }
             }
         }
         stage('Run Image') {
             steps {
-                sh 'docker run milanarif/string-operator'
+                script {
+                    def pom = readMavenPom file: 'pom.xml'
+                    def version = pom.version.toString()
+                    if (!version.contains('SNAPSHOT')) {
+                        sh 'docker run milanarif/string-operator'
+                }
             }
 
         }
