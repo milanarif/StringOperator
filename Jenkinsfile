@@ -44,8 +44,8 @@ pipeline {
             }
         }
         stage('Push Image') {
-            if (env.BRANCH_NAME == "master") {
-                steps {
+            steps {
+                if (env.BRANCH_NAME == "master") {
                     sh 'docker login --username=${DOCKERHUB_USERNAME} --password=${DOCKERHUB_PASSWORD}'
                     sh 'docker push milanarif/string-operator'
                 }
