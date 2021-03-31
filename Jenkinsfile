@@ -10,8 +10,6 @@ pipeline {
     stages {
         stage('Build'){
             steps {
-                echo 'Hello World'
-                sh 'java -version'
                 sh 'mvn clean compile'
             }
         }
@@ -26,34 +24,30 @@ pipeline {
                 branch 'master'
             }
             steps {
-                script {
-                    echo env.BRANCH_NAME
-                    if (env.BRANCH_NAME == 'master') {
-                        sh 'mvn package'
-                        sh 'docker --version'
-                        sh 'docker build -t milanarif/string-operator .'
-                        archiveArtifacts artifacts: 'target/*.jar'
-                    }
+                sh 'mvn package'
+                sh 'docker build -t milanarif/string-operator .'
+            }
+            post {
+                success {
+                    archiveArtifacts 'target/*.jar'
                 }
             }
         }
         stage('Run Image') {
+            when {
+                branch 'master'
+            }
             steps {
-                script {
-                    if (env.BRANCH_NAME == "master") {
-                        sh 'docker run milanarif/string-operator'
-                    }
-                }
+                sh 'docker run milanarif/string-operator'
             }
         }
         stage('Push Image') {
+            when {
+                branch 'master'
+            }
             steps {
-                script {
-                    if (env.BRANCH_NAME == "master") {
-                        sh 'docker login --username=${DOCKERHUB_USERNAME} --password=${DOCKERHUB_PASSWORD}'
-                        sh 'docker push milanarif/string-operator'
-                    }
-                }
+                sh 'docker login --username=${DOCKERHUB_USERNAME} --password=${DOCKERHUB_PASSWORD}'
+                sh 'docker push milanarif/string-operator'
             }
         }
     }
