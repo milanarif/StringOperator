@@ -37,7 +37,7 @@ pipeline {
             steps {
                 script {
                     def version = sh script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout', returnStdout: true
-                    if (!version.contains('SNAPSHOT')) {
+                    if (version.contains('SNAPSHOT')) {
                         sh 'docker run milanarif/string-operator'
                     }
                 }
