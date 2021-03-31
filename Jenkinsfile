@@ -4,7 +4,7 @@ pipeline{
         maven 'Maven 3.6.3'
     }
     environment {
-        credentials-dockerhub = credentials('dockerhub-cred')
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub-cred')
     }
 
     stages{
@@ -25,7 +25,7 @@ pipeline{
                 sh 'mvn package'
                 sh 'docker --version'
                 sh 'docker build -t milanarif/string-operator .'
-                sh credentials-dockerhub
+                sh (credentials-dockerhub)
                 sh 'docker push milanarif/string-operator'
             }
             post {
