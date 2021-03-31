@@ -36,8 +36,10 @@ pipeline {
         stage('Run Image') {
             steps {
                 script {
-                    def version = sh script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout', returnStdout: true
-                    if (version.contains('SNAPSHOT')) {
+                    def pom = new File('pom.xml').getText('utf-8')
+                    def doc = new XmlParser().parseText(pom)
+                    def version = doc.version.text()
+                    if (!version.contains('SNAPSHOT')) {
                         sh 'docker run milanarif/string-operator'
                     }
                 }
