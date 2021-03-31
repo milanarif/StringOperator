@@ -5,6 +5,8 @@ pipeline{
     }
     environment {
         DOCKERHUB_PASSWORD = credentials('dh-pass')
+        DOCKERHUB_USERNAME = credentials ('dh-username')
+
     }
 
     stages{
@@ -25,7 +27,7 @@ pipeline{
                 sh 'mvn package'
                 sh 'docker --version'
                 sh 'docker build -t milanarif/string-operator .'
-                sh 'docker login --username=milanarif --password=${DOCKERHUB_PASSWORD}'
+                sh 'docker login --username=${DOCKERHUB_USERNAME} --password=${DOCKERHUB_PASSWORD}'
                 sh 'docker push milanarif/string-operator'
             }
             post {
