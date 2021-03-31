@@ -8,7 +8,7 @@ pipeline {
   stages {
     stage('Cloning Git') {
       steps {
-        git 'https://github.com/milanarif/StringOperator.git'
+        git 'git@github.com:milanarif/StringOperator.git'
       }
     }
     stage('Building image') {
