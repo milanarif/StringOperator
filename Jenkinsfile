@@ -1,4 +1,4 @@
-pipeline{
+node{
     agent any
     tools{
         maven 'Maven 3.6.3'
@@ -20,11 +20,6 @@ pipeline{
             steps {
                 sh 'mvn test'
             }
-        }
-
-        if($VERSION.contains('SNAPSHOT')) {
-            currentBuild.result = 'SUCCESS'
-            return
         }
 
         stage('Build Image'){
