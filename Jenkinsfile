@@ -4,7 +4,7 @@ pipeline{
         maven 'Maven 3.6.3'
     }
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub-cred')
+        DOCKERHUB_PASSWORD = credentials('dh-pass')
     }
 
     stages{
@@ -25,7 +25,7 @@ pipeline{
                 sh 'mvn package'
                 sh 'docker --version'
                 sh 'docker build -t milanarif/string-operator .'
-                sh (credentials-dockerhub)
+                sh 'docker login --username=milanarif --password=${DOCKERHUB_PASSWORD}'
                 sh 'docker push milanarif/string-operator'
             }
             post {
@@ -36,3 +36,5 @@ pipeline{
         }
     }
 }
+
+docker login --username=milanarif --password=729f6f03-ab78-4fba-b55d-0586c4d727a4
