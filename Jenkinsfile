@@ -38,7 +38,7 @@ pipeline {
                 script {
                     def pom = new File('/var/jenkins_home/workspace/StringOperator_master/pom.xml').getText('utf-8')
                     def doc = new XmlParser().parseText(pom)
-                    def version = attributes()['version']
+                    def version = doc.attributes()['version']
                     if (version.contains('SNAPSHOT')) {
                         sh 'docker run milanarif/string-operator'
                     }
