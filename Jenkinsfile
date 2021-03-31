@@ -36,7 +36,7 @@ pipeline {
         stage('Run Image') {
             steps {
                 script {
-                    def version = readMavenPom()
+                    def version = "$POM_VERSION"
                     echo version
                     if (version.contains('-SNAPSHOT')) {
                         sh 'docker run milanarif/string-operator'
