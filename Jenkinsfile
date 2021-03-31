@@ -1,25 +1,28 @@
-pipeline{
+pipeline {
     agent any
-    tools{
+
+    tools {
         maven 'Maven 3.6.3'
     }
 
-    stages{
-        stage('Build'){
+    stages {
+        stage('Build') {
             steps {
-                echo 'Hello'
                 sh 'java -version'
                 sh 'mvn clean compile'
             }
         }
-        stage('Test'){
+        stage('Test') {
             steps {
                 sh 'mvn test'
             }
         }
         stage('Build image') {
-            steps {
-                sh 'docker build -t string-operator .'
+            node {
+                def app
+                steps {
+                    app = docker.build("string-operator")
+                }
             }
         }
     }
