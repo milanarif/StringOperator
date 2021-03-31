@@ -25,7 +25,7 @@ pipeline {
             steps {
                 script {
                     echo env.BRANCH_NAME
-                    if (BRANCH_NAME == 'master') {
+                    if (BRANCH_NAME.equals('master')) {
                         sh 'mvn package'
                         sh 'docker --version'
                         sh 'docker build -t milanarif/string-operator .'
