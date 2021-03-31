@@ -23,6 +23,7 @@ pipeline{
             steps {
                 sh 'mvn package'
                 sh 'docker --version'
+                sh 'docker build -t string-operator .'
             }
             post {
                 success {
