@@ -24,7 +24,7 @@ pipeline {
         stage('Build Image'){
             steps {
                 script {
-                    if (true) {
+                    if (env.BRANCH_NAME == "master") {
                         sh 'mvn package'
                         sh 'docker --version'
                         sh 'docker build -t milanarif/string-operator .'
@@ -36,9 +36,7 @@ pipeline {
         stage('Run Image') {
             steps {
                 script {
-                    def version = "$POM_VERSION"
-                    echo version
-                    if (version.contains('-SNAPSHOT')) {
+                    if (env.BRANCH_NAME == "master") {
                         sh 'docker run milanarif/string-operator'
                     }
                 }
