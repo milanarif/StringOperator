@@ -36,15 +36,13 @@ pipeline {
         stage('Run Image') {
             steps {
                 script {
-                    def pom = new File('pom.xml').getText('utf-8')
-                    def doc = new XmlParser().parseText(pom)
-                    def version = doc.attributes()['version']
+                    def version = sh (script: -Dexec.executable='echo' -Dexec.args='${project.version}' --non-recursive exec:exec -q)
+                    echo version
                     if (version.contains('SNAPSHOT')) {
                         sh 'docker run milanarif/string-operator'
                     }
                 }
             }
-
         }
         stage('Push Image') {
             steps {
