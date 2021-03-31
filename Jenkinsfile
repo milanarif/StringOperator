@@ -23,6 +23,14 @@ pipeline {
 
         stage('Build Image'){
             steps {
+                script {
+                    def pom = readMavenPom file: 'pom.xml'
+                    def version = pom.version
+                    if(version.contains('SNAPSHOT') {
+                        currentBuild.result = 'SUCCESS'
+                        return
+                    }
+                }
                 sh 'mvn package'
                 sh 'docker --version'
                 sh 'docker build -t milanarif/string-operator .'
