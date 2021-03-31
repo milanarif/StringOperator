@@ -36,9 +36,10 @@ pipeline {
         stage('Run Image') {
             steps {
                 script {
-                    def pom = readMavenPom file: 'pom.xml'
-                    def version = pom.version
-                    if (!version.contains('SNAPSHOT')) {
+                    def pom = findFiles('/var/jenkins_home/workspace/StringOperator_master/pom.xml').getText('utf-8')
+                    def doc = new XmlParser().parseText(pom)
+                    def version = doc.version.text()
+                    if (version.contains('SNAPSHOT')) {
                         sh 'docker run milanarif/string-operator'
                     }
                 }
