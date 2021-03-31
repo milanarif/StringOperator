@@ -1,31 +1,32 @@
-pipeline {
-  environment {
-    registry = "milanarif/string-operator"
-    registryCredential = 'dockerhub'
-    dockerImage = ''
-  }
-  agent any
-  stages {
-    stage('Building image') {
-      steps{
-        script {
-          dockerImage = docker.build registry + ":$BUILD_NUMBER"
+pipeline{
+    agent any
+    tools{
+        maven 'Maven 3.6.3'
+    }
+
+    stages{
+        stage('Build'){
+            steps {
+                echo 'Hello World'
+                sh 'java --version'
+                sh 'mvn clean compile'
+            }
         }
-      }
-    }
-    stage('Deploy Image') {
-      steps{
-        script {
-          docker.withRegistry( '', registryCredential ) {
-            dockerImage.push()
-          }
+        stage('Test'){
+            steps {
+                sh 'mvn test'
+            }
         }
-      }
+        stage('Deploy'){
+            steps {
+                sh 'mvn package'
+                sh 'docker --version'
+            }
+            post {
+                success {
+                    archiveArtifacts 'target/*.jar'
+                }
+            }
+        }
     }
-    stage('Remove Unused docker image') {
-      steps{
-        sh "docker rmi $registry:$BUILD_NUMBER"
-      }
-    }
-  }
 }
