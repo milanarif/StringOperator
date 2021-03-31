@@ -3,6 +3,9 @@ pipeline{
     tools{
         maven 'Maven 3.6.3'
     }
+    environment {
+        credentials-dockerhub = 'docker login --username=milanarif --password=729f6f03-ab78-4fba-b55d-0586c4d727a4'
+    }
 
     stages{
         stage('Build'){
@@ -22,7 +25,7 @@ pipeline{
                 sh 'mvn package'
                 sh 'docker --version'
                 sh 'docker build -t milanarif/string-operator .'
-                sh 'docker login --username=milanarif --password=729f6f03-ab78-4fba-b55d-0586c4d727a4'
+                sh credentials-dockerhub
                 sh 'docker push milanarif/string-operator'
             }
             post {
