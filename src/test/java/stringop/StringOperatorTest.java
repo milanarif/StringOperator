@@ -8,7 +8,7 @@ public class StringOperatorTest {
 
    @Test
    void correctStringOutput(){
-   String expectedResult = "Hell!";
+   String expectedResult = "Hello!";
 
    String actualResult = StringOperator.returnHello();
 
