@@ -37,8 +37,8 @@ pipeline {
             steps {
                 script {
                     def pom = readMavenPom file: 'pom.xml'
-                    def version = pom.version.toString()
-                    if (!version.contains('SNAPSHOT')) {
+                    def project = new XmlParser().parseText(pom)
+                    if (!project.version.text().contains('SNAPSHOT')) {
                         sh 'docker run milanarif/string-operator'
                     }
                 }
