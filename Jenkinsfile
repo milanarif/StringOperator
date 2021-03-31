@@ -36,7 +36,7 @@ pipeline {
         stage('Run Image') {
             steps {
                 script {
-                    def version = sh (script: -Dexec.executable='echo' -Dexec.args='${project.version}' --non-recursive exec:exec -q)
+                    def version = sh (cat pom.xml | grep "^    <version>.*</version>$" | awk -F'[><]' '{print $3}')
                     echo version
                     if (version.contains('SNAPSHOT')) {
                         sh 'docker run milanarif/string-operator'
