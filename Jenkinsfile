@@ -22,11 +22,11 @@ pipeline{
                 sh 'mvn package'
                 sh 'docker --version'
                 sh 'docker build -t string-operator .'
+                sh 'docker push milanarif/string-operator'
             }
             post {
                 success {
                     archiveArtifacts 'target/*.jar'
-                    archiveArtifacts 'target/*.tar'
                 }
             }
         }
