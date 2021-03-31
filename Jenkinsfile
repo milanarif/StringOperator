@@ -1,4 +1,4 @@
-node{
+pipeline {
     agent any
     tools{
         maven 'Maven 3.6.3'
@@ -23,6 +23,9 @@ node{
         }
 
         stage('Build Image'){
+            when {
+                expression { $VERSION.contains('SNAPSHOT') }
+            }
             steps {
                 sh 'mvn package'
                 sh 'docker --version'
