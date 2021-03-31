@@ -25,7 +25,7 @@ pipeline {
             steps {
                 script {
                     echo env.BRANCH_NAME
-                    if (BRANCH_NAME.equals('master')) {
+                    if (env.BRANCH_NAME == 'master') {
                         sh 'mvn package'
                         sh 'docker --version'
                         sh 'docker build -t milanarif/string-operator .'
@@ -44,9 +44,11 @@ pipeline {
             }
         }
         stage('Push Image') {
-            steps {
-                sh 'docker login --username=${DOCKERHUB_USERNAME} --password=${DOCKERHUB_PASSWORD}'
-                sh 'docker push milanarif/string-operator'
+            if (env.BRANCH_NAME == "master") {
+                steps {
+                    sh 'docker login --username=${DOCKERHUB_USERNAME} --password=${DOCKERHUB_PASSWORD}'
+                    sh 'docker push milanarif/string-operator'
+                }
             }
         }
     }
