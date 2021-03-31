@@ -24,7 +24,7 @@ pipeline {
         stage('Build Image'){
             steps {
                 script {
-                    if (env.BRANCH_NAME == "master") {
+                    if (BRANCH_NAME == 'master') {
                         sh 'mvn package'
                         sh 'docker --version'
                         sh 'docker build -t milanarif/string-operator .'
