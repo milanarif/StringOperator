@@ -4,7 +4,7 @@ pipeline{
         maven 'Maven 3.6.3'
     }
     environment {
-        credentials-dockerhub = 'docker login --username=milanarif --password=729f6f03-ab78-4fba-b55d-0586c4d727a4'
+        credentials-dockerhub = credentials('dockerhub-cred')
     }
 
     stages{
