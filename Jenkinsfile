@@ -44,8 +44,10 @@ pipeline {
 
         }
         stage('Push Image') {
-            sh 'docker login --username=${DOCKERHUB_USERNAME} --password=${DOCKERHUB_PASSWORD}'
-            sh 'docker push milanarif/string-operator'
+            steps {
+                sh 'docker login --username=${DOCKERHUB_USERNAME} --password=${DOCKERHUB_PASSWORD}'
+                sh 'docker push milanarif/string-operator'
+            }
         }
     }
 }
