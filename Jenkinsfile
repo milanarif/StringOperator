@@ -36,5 +36,3 @@ pipeline{
         }
     }
 }
-
-docker login --username=milanarif --password=729f6f03-ab78-4fba-b55d-0586c4d727a4
