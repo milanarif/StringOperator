@@ -6,7 +6,6 @@ pipeline {
     environment {
         DOCKERHUB_PASSWORD = credentials('dh-pass')
         DOCKERHUB_USERNAME = credentials ('dh-username')
-        VERSION = readMavenPom().getVersion()
     }
     stages {
         stage('Build'){
@@ -37,7 +36,9 @@ pipeline {
         stage('Run Image') {
             steps {
                 script {
-                    if (VERSION.contains('-SNAPSHOT')) {
+                    def version = readMavenPom()
+                    echo version
+                    if (version.contains('-SNAPSHOT')) {
                         sh 'docker run milanarif/string-operator'
                     }
                 }
