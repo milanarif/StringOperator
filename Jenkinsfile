@@ -24,6 +24,7 @@ pipeline {
         stage('Build Image'){
             steps {
                 script {
+                    echo env.BRANCH_NAME
                     if (BRANCH_NAME == 'master') {
                         sh 'mvn package'
                         sh 'docker --version'
