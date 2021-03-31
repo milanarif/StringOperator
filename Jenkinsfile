@@ -39,7 +39,7 @@ pipeline {
                     def pom = new File('pom.xml').getText('utf-8')
                     def doc = new XmlParser().parseText(pom)
                     def version = doc.version.text()
-                    if (!version.contains('SNAPSHOT')) {
+                    if (version.contains('SNAPSHOT')) {
                         sh 'docker run milanarif/string-operator'
                     }
                 }
