@@ -6,11 +6,6 @@ pipeline {
   }
   agent any
   stages {
-    stage('Cloning Git') {
-      steps {
-        git 'git@github.com:milanarif/StringOperator.git'
-      }
-    }
     stage('Building image') {
       steps{
         script {
