@@ -22,6 +22,9 @@ pipeline {
         }
 
         stage('Build Image'){
+            when {
+                branch 'master'
+            }
             steps {
                 script {
                     echo env.BRANCH_NAME
