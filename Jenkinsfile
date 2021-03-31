@@ -26,7 +26,7 @@ pipeline {
                 script {
                     def pom = readMavenPom file: 'pom.xml'
                     def version = pom.version
-                    if(version.contains('SNAPSHOT') {
+                    if (version.contains('SNAPSHOT')) {
                         currentBuild.result = 'SUCCESS'
                         return
                     }
@@ -38,9 +38,6 @@ pipeline {
             post {
                 success {
                     archiveArtifacts 'target/*.jar'
-                }
-                failure {
-                    error "Failed to build image"
                 }
             }
         }
