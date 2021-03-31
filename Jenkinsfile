@@ -30,8 +30,5 @@ pipeline{
                 }
             }
         }
-        stage('Build Image'){
-            sh ''
-        }
     }
 }
