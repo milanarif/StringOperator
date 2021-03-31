@@ -1,5 +1,7 @@
 pipeline{
-    agent any
+    agent {
+        dockerfile true
+    }
     tools{
         maven 'Maven 3.6.3'
     }
@@ -27,6 +29,9 @@ pipeline{
                     archiveArtifacts 'target/*.jar'
                 }
             }
+        }
+        stage('Build Image'){
+            sh ''
         }
     }
 }
