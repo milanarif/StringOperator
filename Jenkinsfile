@@ -38,7 +38,9 @@ pipeline {
             }
         }
         stage('Test Image') {
-            sh 'docker run milanarif/string-operator'
+            steps {
+                sh 'docker run milanarif/string-operator'
+            }
 
         }
         stage('Push Image') {
