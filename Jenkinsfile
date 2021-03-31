@@ -31,6 +31,9 @@ pipeline {
                 success {
                     archiveArtifacts 'target/*.jar'
                 }
+                failure {
+                    error "Failed to build image"
+                }
             }
         }
         stage('Run Image') {
