@@ -7,7 +7,7 @@ pipeline {
         DOCKERHUB_PASSWORD = credentials('dh-pass')
         DOCKERHUB_USERNAME = credentials ('dh-username')
     }
-    stages{
+    stages {
         stage('Build'){
             steps {
                 echo 'Hello World'
@@ -42,6 +42,7 @@ pipeline {
                     def version = pom.version.toString()
                     if (!version.contains('SNAPSHOT')) {
                         sh 'docker run milanarif/string-operator'
+                    }
                 }
             }
 
