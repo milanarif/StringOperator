@@ -6,9 +6,7 @@ pipeline{
     environment {
         DOCKERHUB_PASSWORD = credentials('dh-pass')
         DOCKERHUB_USERNAME = credentials ('dh-username')
-
     }
-
     stages{
         stage('Build'){
             steps {
